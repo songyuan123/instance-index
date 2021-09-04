@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>日历组件</title>
+	<meta charset="utf-8">
+	<script src="vue.min.js"></script>
+	<script src="routes.js"></script>
+	<style type="text/css">
+	*{list-style: none;padding: 0;margin: 0;}
+	.div_1{
+		width: 95%;
+		height: 300px;
+		border-bottom: 1px solid #ccc;
+		margin: 30px;
+		color: green;
+		font-weight: bold;
+		position: absolute;
+	}
+	.div_2{
+		width: 95%;
+		height: 300px;
+		border-bottom: 1px solid #ccc;
+		margin: 30px;
+		color: green;
+		font-weight: bold;
+		position: absolute;
+		top: 360px;
+	}
+	.div_3{
+		width: 95%;
+		height: 300px;
+		border-bottom: 1px solid #ccc;
+		margin: 30px;
+		color: green;
+		font-weight: bold;
+		position: absolute;
+		top: 720px;
+	}
+	.drili{
+		width: 210px;
+		height: 210px;
+		border:1px solid green;
+		padding: 10px;
+	}
+	.div_3 .drili{
+		float: left;
+		border: none;
+	}
+	.yr{
+		display: block;
+		width: 100%;
+		text-align: center;
+	}
+	.select{
+		width: 210px;
+		height: 20px;
+		position: relative;
+	}
+	.select ul{
+		width: 50px;
+		height: 150px;
+		font-size: 10px;
+		overflow-x: scroll;
+		position: absolute;
+		top: 20px;
+		background-color: lightgray;
+		color: blue;
+		display:none;
+	}
+	.select .ul_1{
+		
+	}
+	.select .ul_2{
+		left: 72px;
+	}
+	.select ul li{
+		cursor: pointer;
+	}
+	.select ul li:hover{
+		background-color: green;
+	}
+	.select input{
+		width: 50px;
+		height: 15px;
+		position: absolute;
+		line-height:15px;
+		text-align:center;
+	}
+	.select .input_1{
+		top: 0px;
+		left: 0px;
+	}
+	.select .input_2{
+		top: 0px;
+		left: 72px;
+	}
+	.select span{
+		display: block;
+		width: 20px;
+		height: 20px;
+		text-align: center;;
+		line-height: 20px;
+		position: absolute;
+		top: 0px;
+	}
+	.select .span_1{
+		left: 52px;
+	}
+	.select .span_2{
+		left: 124px;
+	}
+	.week{
+		border-top: 1px solid  green;
+		border-bottom: 1px solid green;
+		display: flex;
+		justify-content: space-around;
+	}
+	.week week{
+		font-size: 14px;
+	}
+	.days{
+		display: block;
+		width: 100%;
+		height: 150px;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+	.days li{
+		width: 30px;
+		height: 30px;
+		line-height: 30px;
+		text-align: center;
+	}
+	.days li:hover{
+		background-color: blue;
+		color: white;
+		cursor: pointer;
+	}
+	.shuchu{
+		width: 210px;
+		padding: 10px;
+		border: 1px solid green;
+		position: absolute;
+		top: 210px;
+		left: 280px;
+	}
+	.div_3 .shuchu{
+		left: 830px;
+	}
+	.drili_bk{
+		border:1px solid green;
+		position: absolute;
+		left: 100px;
+	}
+	.left{
+		width: 30px;
+		height: 40px;
+		border: 1px solid gray;
+		border-radius: 5px;
+		position: absolute;
+		left: 50px;
+		top: 110px;
+	}
+	.left span{
+		display: block;
+		width: 0px;
+		height: 0px;
+		border: 10px solid;
+		border-color: transparent orange transparent transparent;
+		margin-top: 10px;
+	}
+	.right{
+		width: 30px;
+		height: 40px;
+		border: 1px solid gray;
+		border-radius: 5px;
+		position: absolute;
+		top: 110px;
+		left: 810px;
+	}
+	.right span{
+		display: block;
+		width: 0px;
+		height: 0px;
+		border: 10px solid;
+		border-color: transparent  transparent transparent  orange;
+		margin-top: 10px;
+		position: absolute;
+		right: 0px;
+	}
+	.left:hover{
+		cursor: pointer;
+		box-shadow:0px 0px 15px orange;
+	}
+	.right:hover{
+		cursor: pointer;
+		box-shadow:0px 0px 15px orange;
+	}
+	</style>
+</head>
+<body>
+	<div id="app">
+		<!-- 单个日历 -->
+		<div class="div_1">
+			<h4>单个日历（本月）</h4>
+			<div class="drili">
+				<yr class="yr">{{y}}年{{n}}{{m}}月</yr>
+				<ul class="week">
+					<week v-for="weeks in weeks">{{weeks.name}}</week>
+				</ul>
+				<days class="days">
+					<li v-for="person in person"  v-on:click="clickday_1(person)">{{person}}</li>
+				</days>
+			</div>
+			<div class="shuchu" >您选择了：{{y}}年{{m}}月{{d1}}日</div>
+		</div>
+
+		<div class="div_2">
+			<h4>单个日历（本月）select选择</h4>
+			<div class="drili">
+				<!-- <yr class="yr">{{y}}年{{n}}{{m}}月</yr> -->
+				<yr class="yr">
+					<div class="select">
+						<input type="text" name="" class="input_1" v-model="selectvalue1" @click="input1">
+						<ul class="ul_1">
+							<li v-for="(selectyear,index) in selectyear" @click="select1">{{selectyear}}</li>
+						</ul>
+							<span class="span_1">年</span>
+						<input type="txt" name="" class="input_2" v-model="selectvalue2" @click="input2">
+						<ul class="ul_2">
+							<li v-for="selectmonth in selectmonth" @click="select2">{{selectmonth}}</li>
+						</ul>
+							<span class="span_2">月</span>
+					</div>
+				</yr>
+				<ul class="week">
+					<week v-for="weeks in weeks">{{weeks.name}}</week>
+				</ul>
+				<days class="days">
+					<li v-for="person in person2"  v-on:click="clickday_2(person)" v-if="ccc">{{person}}</li>
+				</days>
+			</div>
+			<div class="shuchu" >您选择了：{{y2}}年{{m2}}月{{d2}}日</div>
+		</div>
+
+
+		<div class="div_3">
+			<h4>一排日历</h4>
+			<div class="left" @click="onleft"><span ></span></div>
+			<!--  -->
+			<div class="drili_bk">
+			<div class="drili">
+				<yr class="yr">{{ys3}}年{{ms3}}月</yr>
+				<ul class="week">
+					<week v-for="weeks in weeks">{{weeks.name}}</week>
+				</ul>
+				<days class="days">
+					<li v-for="person in persons3"  @click="clickdays_3(person)">{{person}}</li>
+				</days>
+			</div>
+
+			<div class="drili">
+				<yr class="yr">{{ys2}}年{{ms2}}月</yr>
+				<ul class="week">
+					<week v-for="weeks in weeks">{{weeks.name}}</week>
+				</ul>
+				<days class="days">
+					<li v-for="person in persons2"  @click="clickdays_2(person)">{{person}}</li>
+				</days>
+			</div>
+
+			<div class="drili">
+				<yr class="yr">{{ys}}年{{ms}}月</yr>
+				<ul class="week">
+					<week v-for="weeks in weeks">{{weeks.name}}</week>
+				</ul>
+				<days class="days">
+					<li v-for="person in persons1"  @click="clickdays_1(person)">{{person}}</li>
+				</days>
+			</div>
+			</div>
+			<!--  -->
+			<div class="right" @click="onright"><span ></span></div>
+			
+			<div class="shuchu" >您选择了：{{y3}}年{{m3}}月{{d3}}日</div>
+		</div>
+	</div>
+
+	<script>
+		var date=new Date();
+		var year=date.getFullYear();//获取当前年份
+		var month=date.getMonth()+1;//获取当前月份
+		var day=date.getDate();//获取当日
+		var d=new Date(year,month,0).getDate();//获取当月天数
+
+		var yeara=year+1;//为一排日历创建的一个alert输出参数
+		var vm=new Vue({
+			el:"#app",
+			data(){
+				return{
+					n:0,
+					weeks:[//周
+						{name:"日"},
+						{name:"一"},
+						{name:"二"},
+						{name:"三"},
+						{name:"四"},
+						{name:"五"},
+						{name:"六"}
+					],
+					d1:"X",
+					d2:"X",
+					selectvalue1:"",
+					selectvalue2:"",
+					display1:false,
+					display2:false,
+					ccc:true,
+					c:"",
+					y2:"",
+					m2:"",
+					y3:'',
+					m3:'',
+					d3:'X',
+					ys:'',
+					ms:'',
+					ys2:'',
+					ms2:'',
+					ys3:'',
+					ms3:''
+					// c1:'',
+					// c2:'',
+					// c3:'',
+					// persons1:'',
+					// persons2:'',
+					// persons3:'',
+
+				}
+			},
+			//创建局部组件
+			components:{
+				"yr":yr,
+				"week":week,
+				"days":days
+			},
+			//函数
+			computed:{
+				y:function(){
+					return year
+				},
+				m:function(){
+					return month
+				},
+				person:function(){
+					var arr=[];
+					for(var i=0;i<d;i++){
+						arr[i]=i+1;
+					}
+					return arr;
+					
+				},
+				person2:function(){
+					var arr=[];
+					for(var i=0;i<this.c;i++){
+						arr[i]=i+1;
+					}
+					return arr;
+				},
+				selectyear:function(){
+					var arr=[];
+					for(var i=1949;i<=year;i++){
+						arr[i-1949]=i;
+					}
+					arr.reverse();
+					return arr;
+				},
+				selectmonth:function(){
+					var arr=[];
+					for(var i=0;i<12;i++){
+						arr[i]=i+1;
+					}
+					return arr;
+				},
+				
+				c1:function(){
+					var x=new Date(this.ys,this.ms,0).getDate();
+					return x;
+				},
+				c2:function(){
+					var x;
+					if(this.ms>=2){
+						 x=new Date(this.ys,this.ms-1,0).getDate();
+						 this.ys2=this.ys;
+						 this.ms2=this.ms-1;
+					}else{
+						x=new Date(this.ys-1,12,0)
+						this.ys2=this.ys-1;
+						this.ms2=12;
+
+					}
+					return x;
+				},
+				c3:function(){
+					var x;
+					if(this.ms>=3){
+						 x=new Date(this.ys,this.ms-2,0).getDate();
+						 this.ys3=this.ys;
+						 this.ms3=this.ms-2;
+					}else if(this.ms<3&&this.ms>=2){
+						x=new Date(this.ys-1,12,0)
+						this.ys3=this.ys-1;
+						this.ms3=12;
+					}else{
+						x=new Date(this.ys-1,11,0)
+						this.ys3=this.ys-1;
+						this.ms3=11;
+					}
+					return x;
+				},
+				persons1:function(){
+					var arr=[];
+					for(var i=0;i<this.c1;i++){
+						arr[i]=i+1;
+					}
+					return arr;
+				},
+				persons2:function(){
+					var arr=[];
+					for(var i=0;i<this.c2;i++){
+						arr[i]=i+1;
+					}
+					return arr;
+				},
+				persons3:function(){
+					var arr=[];
+					for(var i=0;i<this.c3;i++){
+						arr[i]=i+1;
+					}
+					return arr;
+				},
+
+				
+
+				
+				
+
+				
+			},
+
+			//事件
+			methods:{
+				//获取当日传输给d
+				clickday_1(e){
+					this.d1=e;
+				},
+				clickday_2(e){
+					this.d2=e;
+				},
+				input1:function(){
+					this.display1=!this.display1;
+		
+				},
+				input2:function(){
+					this.display2=!this.display2;
+				},
+				select1:function(e){
+					this.selectvalue1=e.target.innerHTML;
+					document.getElementsByClassName("ul_1")[0].style.display="none";
+				},
+				select2:function(e){
+					this.selectvalue2=e.target.innerHTML;
+					document.getElementsByClassName("ul_2")[0].style.display="none";
+				},
+				onleft:function(){
+					if(this.ys>=1949){
+						if(this.ms>3){
+							this.ms=this.ms-3;
+						}else if(this.ms<=3){
+							this.ms=12;
+							this.ys=this.ys-1;
+						}
+					}else if(this.ys<1949){
+						alert("请选择1949年1月-"+yeara+"年3月的日期");
+					}
+					
+					
+				},
+				onright:function(){
+					if(this.ys<=year){
+						if(this.ms<12){
+							this.ms=this.ms+3;
+						}else if(this.ms>=12){
+							this.ms=3;
+							this.ys=this.ys+1;
+						}
+
+					}else if(this.ys>year){
+						alert("请选择1949年1月-"+yeara+"年3月的日期");
+					}
+				},
+				clickdays_1:function(e){
+					this.y3=this.ys;
+					this.m3=this.ms;
+					this.d3=e;
+				},
+				clickdays_2:function(e){
+					this.y3=this.ys;
+					this.m3=this.ms-1;
+					this.d3=e;
+				},
+				clickdays_3:function(e){
+					this.y3=this.ys;
+					this.m3=this.ms-2;
+					this.d3=e;
+				}
+				
+			},
+			//监听
+			watch:{
+				display1:function(val){
+					if(val==true){
+						document.getElementsByClassName("ul_1")[0].style.display="block";
+					}else{
+						document.getElementsByClassName("ul_1")[0].style.display="none";
+					}
+				},
+				display2:function(val){
+					if(val==true){
+						document.getElementsByClassName("ul_2")[0].style.display="block";
+					}else{
+						document.getElementsByClassName("ul_2")[0].style.display="none";
+					}
+				},
+				selectvalue1:function(val){
+					 this.y2=val;
+					 this.c=new Date(this.selectvalue1,this.selectvalue2,0).getDate();
+					 this.ccc=false;
+					 this.ccc=true;
+				},
+				selectvalue2:function(val){
+					 this.m2=val;
+					 this.c=new Date(this.selectvalue1,this.selectvalue2,0).getDate();
+					 this.ccc=false;
+					 this.ccc=true;
+				}
+			}
+		})
+		vm.c=new Date(year,month,0).getDate();
+		vm.y2=year;
+		vm.m2=month; 
+		vm.ys=year;
+		vm.ms=month;
+		vm.y3=year;
+		vm.m3=month;
+		//封装局部组件
+		var yr={	
+			template:"<p></p>"
+		}
+		var week={
+			template:"<li ></li>"
+		}
+		var days={
+			template:"<ul></ul>"
+			
+		}
+		
+		console.log(vm.ms)
+	</script>
+</body>
+</html>

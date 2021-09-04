@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>眼睛在线试戴</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		*{
+			padding: 0;
+			margin:0;
+			border: 0;
+			text-decoration: none;
+			list-style:none;
+			font-size: 12px;
+			font-weight: bold;
+		}
+		/*边框*/
+		#Biankuang{
+			position: relative;
+			width:920px;
+			height:526px;
+			padding: 10px;
+			margin:0 auto;
+			border: 8px solid #B7B7B7;
+			border-radius:5px;
+		}
+		/*弹框*/
+		#tankuang{
+			width: 400px;
+			height: 500px;
+			background-color:white;
+			float: left;
+			position: absolute;
+			top: 10px;
+			padding: 14px 25.5px;
+			z-index: 20;
+			background-repeat: no-repeat;
+			background-size: 100%;
+			display: none;
+		}
+		#tankuang a{
+			display: block;
+			width: 30px;
+			height: 20px;
+			line-height: 20px;
+			text-align: center;
+			color: red;
+			padding: 5px;
+			border-radius:5px;
+			border:1px solid #ccc;
+			float: right;
+			position: absolute;
+			right: 25px;
+			top:25px;
+		}
+		#tankuang a:hover{
+			background-color:yellowgreen;
+		}
+		#tankuang span{
+			display: block;
+			margin:auto;
+			width: 280px;
+			height: 87px;
+			background-repeat:no-repeat;
+			background-size: 100%;
+			position: absolute;
+			top:165px;
+			left:80px;
+
+		}
+		#tankuang span:hover{
+			cursor:move;
+		}
+		#tankuang li{
+			width: 100%;
+			height: 100%;
+		}
+		/*菜单栏*/
+		.caidan{
+			width: 300px;
+			height: 30px;
+			float: left;
+		}
+		.caidan ul{
+			width:100%;
+			height: 100%;
+			display: flex;
+			justify-content:space-between;
+
+		}
+		
+		.caidan ul li{
+			width: 80px;
+			height: 30px;
+			border: 1px solid #B7B7B7;
+			border-bottom: 0px;
+			border-radius: 8px 8px 0 0;
+			text-align: center;
+			line-height: 30px;
+			
+		}
+		.caidan ul li:nth-child(1){
+			background-color: white;
+			z-index: 10;
+		}
+		#caidan2{
+			width: 450px;
+			height: 496px;
+			float:left;
+			position: absolute;
+
+			top: 40px;
+			border: 1px solid #ccc;
+			
+		}
+
+		.lianxin{
+			width: 100%;
+			height: 20px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			display: flex;
+			justify-content: space-around;
+
+		}
+
+		.lianxin li{
+			border: 1px solid white;
+			border-radius: 3px;
+			width:50px;
+			height:20px;
+			text-align:center;
+			line-height:20px;
+		}
+		.lianxin li:hover{
+			border:1px solid #ccc;
+			cursor:pointer;
+		}
+		.lianxin span{
+			width:50px;
+			height:20px;
+			background-color:green;
+			border-radius:3px;
+			float:left;
+			position:absolute;
+			opacity:0.5;
+			left:6px;
+			transition:left 0.5s;
+		}
+		.zaopian li{
+			width: 80px;
+			height: 100px;
+			border: 1px solid #ccc;
+			margin:0 0 25px 25px;
+
+		}
+		.zaopian li img:hover{
+			cursor:pointer;
+			box-shadow: 0px 0px 5px 1px green;
+		}
+		.zaopian{
+			width: 100%;
+			height: 436px;
+			padding-top:10px;
+			padding-bottom: 5px;
+			display: flex;
+			flex-direction: row;
+			flex-wrap:wrap;
+			align-content: flex-start;
+		}
+		
+		.zaopian li p{
+			width: 100%;
+			height: 100%;
+			background-color: gray;
+			float: left;
+			position: relative;
+			top: -100%;
+			opacity: 0.8;
+			display: none;
+
+		}
+		.zaopian li img{
+			display: block;
+			width: 100%;
+			height: 100%;
+
+		}
+
+		/*搜索栏*/
+		#sousuo{
+			width: 445px;
+			height: 78px;
+			border: 1px solid black;
+			float: right;
+		}
+		#sousuo button{
+			width: 100px;
+			height: 22px;
+			border: 1px solid black;
+			border-radius: 2px;
+			margin-top:10px;
+			margin-left: 7px;
+		}
+		#sousuo button:hover{
+			background-color:#9AD8FF;
+			cursor:pointer;
+		}
+		.pingpai li{
+			width: 100px;
+			height: 22px;
+			border: 1px solid black;
+			float: left;
+			margin-left:7px;
+			margin-top: 10px;
+		}
+		.pingpai li:hover{
+			cursor: pointer;
+		}
+		.pingpai span{
+			width: 0;
+			height: 0;
+			border-left: 5px solid transparent;
+			border-right: 5px solid transparent;
+			border-top: 6px solid black;
+			float: right;
+			position: relative;
+			top: -12px;
+			right: 2px;
+
+		}
+		.pingpai p{
+			width: 70px;
+			height: 22px;
+			border-right: 1px solid black;
+			margin:0 auto;
+			line-height: 22px;
+		}
+
+		/*下拉框*/
+		.xialakuang{
+			width: 100px;
+			border:1px solid gray;
+			float: left;
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			background-color:white;
+			display: none;
+			z-index: 30;
+		}
+		.xialakuang li{
+			width: 100%;
+			height: 20px;
+			line-height: 20px;
+			text-align: center;
+			border-bottom: 1px solid #ccc;
+
+		}
+		.xialakuang:hover{
+			cursor: pointer;
+		}
+		.xialakuang li:hover{
+			background-color:#9AD8FF;
+
+		}
+
+		/*眼镜栏*/
+		#yanjing{
+			width: 435px;
+			height: 444px;
+			float: left;
+			position: absolute;
+			top: 95px;
+			right:10px;
+			display: flex;
+			flex-direction: row;
+			flex-wrap:wrap;
+			align-content: flex-start;
+		}
+		#yanjing dl{
+			width: 145px;
+			height: 96px;
+			border-bottom: 1px dashed #ccc;
+			margin-top:15px;
+
+		}
+		#yanjing dt{
+			width: 130px;
+			height: 45px;
+			margin:0px 7.5px 6px 7.5px;
+		}
+		#yanjing img{
+			width: 100%;
+			height: 100%;
+		}
+		#yanjing dd{
+			width: 130px;
+			height: 45px;
+			line-height: 45px;
+			text-align: center;
+		}
+
+		#huanchong{
+			width: 435px;
+			height: 444px;
+			float: left;
+			position: absolute;
+			top: 95px;
+			right:10px;
+			line-height:200px;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<!--整体大边框-->
+	<div id="Biankuang">
+		<ul id="tankuang">
+				<li>
+					<a href="javascript:;">重选</a>
+					<span></span>
+				</li>
+		</ul>
+		<div class="caidan">
+			<ul>
+				<li><span>模特试镜</span></li>
+				<li><span>我的相片</span></li>
+				<li><span>视频相片</span></li>
+			</ul>
+		</div>
+
+		<div id="caidan2">
+			<ul class="lianxin" id="lianxin">
+				<span></span>
+				<li title="123456">全部</li>
+				<li title="1">椭圆脸</li>
+				<li title="2">圆形脸</li>
+				<li title="3">长型脸</li>
+				<li title="4">方形脸</li>
+				<li title="5">瓜子脸</li>
+				<li title="6">心型脸</li>
+			</ul>
+
+			<ul class="zaopian" id="zaopian">
+				<li><img src="imgs/one/model_1.jpg"><p title="1"></p></li>
+				<li><img src="imgs/one/model_2.jpg"><p title="2"></p></li>
+				<li><img src="imgs/one/model_3.jpg"><p title="1"></p></li>
+				<li><img src="imgs/one/model_4.jpg"><p title="2"></p></li>
+				<li><img src="imgs/one/model_5.jpg"><p title="3"></p></li>
+				<li><img src="imgs/one/model_6.jpg"><p title="4"></p></li>
+				<li><img src="imgs/one/model_7.jpg"><p title="3"></p></li>
+				<li><img src="imgs/one/model_8.jpg"><p title="4"></p></li>
+				<li><img src="imgs/one/model_9.jpg"><p title="5"></p></li>
+				<li><img src="imgs/one/model_10.jpg"><p title="6"></p></li>
+				<li><img src="imgs/one/model_11.jpg"><p title="5"></p></li>
+				<li><img src="imgs/one/model_12.jpg"><p title="6"></p></li>
+			</ul>
+		</div>
+
+		<!--搜索栏-->
+		<div id="sousuo">
+			<ul class="pingpai" id="pingpai">
+				<li title="pingpai"><p>品牌</p><span></span></li>
+				<li title="kuanshi"><p>款式</p><span></span></li>
+				<li title="lianxing"><p>脸型</p><span></span></li>
+				<li title="xinghao"><p>型号</p><span></span></li>
+				<li title="kuangxing"><p>框形</p><span></span></li>
+				<li title="caizhi"><p>材质</p><span></span></li>
+				<li title="jiage"><p>价格</p><span></span></li>
+			</ul>
+			<button onclick="sousuo()">点击搜索</button>
+			<div id="xialakuang">
+				<ul class="xialakuang"></ul>
+				<ul class="xialakuang"></ul>
+				<ul class="xialakuang"></ul>
+				<ul class="xialakuang"></ul>
+				<ul class="xialakuang"></ul>
+				<ul class="xialakuang"></ul>
+				<ul class="xialakuang"></ul>
+			</div>
+		</div>
+		<!--***-->
+
+		<!--眼镜栏-->
+			<div id="yanjing" >
+			</div>
+			<div id="huanchong" style="display: none"><img src="imgs/one/jiazai.gif"></div>
+		<!--***-->
+		
+	</div>
+
+
+	<script type="text/javascript">	
+				//右边眼睛栏的数组（眼睛牌子、眼睛图片）
+					var arrdd=new Array(
+						"佐藤樱花001",
+						"佐藤樱花010",
+						"毕加索2062",
+						"毕加索2001",
+						"毕加索2068",
+						"毕加索2051",
+						"沙漠之鹰c16",
+						"沙漠之鹰ccg",
+						"沙漠之鹰r5137",
+						"蝙蝠侠001",
+						"蝙蝠侠002",
+						"蝙蝠侠003"
+						);
+					var arrdt=[
+						"imgs/one/glass_1.jpg",
+						"imgs/one/glass_2.jpg",
+						"imgs/one/glass_3.jpg",
+						"imgs/one/glass_4.jpg",
+						"imgs/one/glass_5.jpg",
+						"imgs/one/glass_6.jpg",
+						"imgs/one/glass_7.jpg",
+						"imgs/one/glass_8.jpg",
+						"imgs/one/glass_9.jpg",
+						"imgs/one/glass_10.jpg",
+						"imgs/one/glass_11.jpg",
+						"imgs/one/glass_12.jpg",
+					];
+				//给右边眼睛栏添加图片、文字等	
+					for(var i=11;i>=0;i--){
+							var div=document.getElementById("yanjing");
+							var dl=document.createElement("dl");
+							var dt=document.createElement("dt");
+							var dd=document.createElement("dd");
+							var img=document.createElement("img")
+								//创建dt dd img标签
+							img.src=arrdt[i];
+								//给img添加图片
+							dd.innerHTML=arrdd[i];
+								//给dd添加内容
+							div.appendChild(dl);
+							dl.appendChild(dt);
+							dl.appendChild(dd);
+							dt.appendChild(img);
+								//在dl里面添加dt dd，在dt里面添加img
+								//var img=document.createTextNode()
+								//document.getElementsByTagName("dt").appendChild(arrdt[i]);
+					}
+				
+
+					var lianxin=document.getElementById("lianxin");
+					var lianxins=lianxin.getElementsByTagName("li");
+					var span=lianxin.getElementsByTagName("span")[0];
+					var ps=document.getElementById("zaopian");
+					var p2=ps.getElementsByTagName("p");
+
+					for(var i=0;i<lianxins.length;i++){
+						(function(i){ 
+							//在前面加一个封装函数，将i存储起来，下面调用（应为onclick是点击事件，需要点击才能运行，与for的遍历对不上）
+							lianxins[i].onclick=function(){
+								span.style.left=this.offsetLeft+"px";
+
+								
+								function show(){
+									for(var a=0;a<7;a++){
+										lianxins[a].style.color="black";
+										lianxins[i].style.color="red";
+									}
+									
+							//下面这个是根据点击脸型菜单，搜索出可以点击的相片（实现效果是隐藏照片表面的p）
+									for(var x=0;x<12;x++){
+											p2[x].style.display="block";
+										if(lianxins[i].title.indexOf(p2[x].title)>-1){
+											p2[x].style.display="none";
+										}
+									}
+							
+							}
+							//将for遍历封装到show（）里面，再通过settimeout让for循环在onclick里面有效，不然点击一次只能循环一个值
+								setTimeout(show(),100);	
+							}
+						})(i)	
+						
+					}
+
+								
+				//点击人脸时的效果
+				var arryanjing=[
+					"imgs/one/glass_1.png",
+					"imgs/one/glass_2.png",
+					"imgs/one/glass_3.png",
+					"imgs/one/glass_4.png",
+					"imgs/one/glass_5.png",
+					"imgs/one/glass_6.png",
+					"imgs/one/glass_7.png",
+					"imgs/one/glass_8.png",
+					"imgs/one/glass_9.png",
+					"imgs/one/glass_10.png",
+					"imgs/one/glass_11.png",
+					"imgs/one/glass_12.png"
+				];
+
+				var arrpoto=[
+					"imgs/one/big_1.jpg",
+					"imgs/one/big_2.jpg",
+					"imgs/one/big_3.jpg",
+					"imgs/one/big_4.jpg",
+					"imgs/one/big_5.jpg",
+					"imgs/one/big_6.jpg",
+					"imgs/one/big_7.jpg",
+					"imgs/one/big_8.jpg",
+					"imgs/one/big_9.jpg",
+					"imgs/one/big_10.jpg",
+					"imgs/one/big_11.jpg",
+					"imgs/one/big_12.jpg"
+				];
+				var biankuang=document.getElementById("Biankuang");
+				var tankuang=document.getElementById("tankuang");
+				var li=tankuang.getElementsByTagName('li')[0];
+				var congxuan=tankuang.getElementsByTagName('a')[0];
+				var tspan=tankuang.getElementsByTagName('span')[0];
+				var poto=document.getElementById("zaopian").getElementsByTagName('img');
+				var yanjing=document.getElementById("yanjing");
+				var ydl=yanjing.getElementsByTagName('dl');
+				var weizhidx;
+				var weizhidy;
+				var weizhimx;
+				var weizhimy;
+				var weizhiux;
+				var weizhiuy;
+				var chayix;
+				var chayy;
+				function down(){
+					chayix=event.clientX-event.offsetX-tspan.offsetLeft;
+					chayiy=event.clientY-event.offsetY-tspan.offsetTop;
+					weizhidx=event.offsetX;
+					weizhidy=event.offsetY;
+					tspan.addEventListener("mousemove",move);
+					function move(){						
+						weizhimx=event.clientX;
+						weizhimy=event.clientY;
+						tspan.style.left=weizhimx-weizhidx-chayix+"px";
+						tspan.style.top=weizhimy-weizhidy-chayiy+"px";
+						
+					};
+
+					function up(){
+						tspan.removeEventListener("mousemove",move);
+						
+						
+					};
+					window.addEventListener("mouseup",up);
+				};
+				
+				
+				
+				tspan.addEventListener("mousedown",down);
+				
+				for(var i=0;i<poto.length;i++){
+					(function(i){
+						poto[i].onclick=function shidai(){
+							tankuang.style.display="block";
+							tankuang.style.backgroundImage="url("+arrpoto[i]+")";
+							tspan.style.backgroundImage="none";
+							//点击眼镜
+							for(var a=0;a<ydl.length;a++){
+								(function(a){
+									ydl[a].onclick=function(){
+										var yimg=arryanjing[a];
+										tspan.style.backgroundImage="url("+yimg+")";
+										
+									}
+
+								})(a)
+							}
+							
+						}
+					})(i)
+					
+				}
+				//重选
+				congxuan.onclick=function(){
+
+					tankuang.style.display="none";
+				}
+				
+				//下拉框
+				var duixiang={
+					pingpai:[
+						"全部",
+						"佐藤樱花",
+						"毕加索",
+						"沙漠之鹰",
+						"蝙蝠侠"
+					],
+					kuanshi:[
+						"全部",
+						"男款",
+						"女款",
+						"通用款"
+					],
+					lianxing:[
+						"全部",
+						"椭圆脸",
+						"长形脸",
+						"方形脸",
+						"瓜子脸",
+						"心型脸"
+					],
+					xinghao:[
+						"40-49（小码）",
+						"50-53（中码）",
+						"54-57（大码）"
+					],
+				 	kuangxing:[
+						"全部",
+						"全框",
+						"半框",
+						"无框",
+						"眉框"
+					],
+				 	caizhi:[
+						"全部",
+						"金属合金",
+						"板材镜架",
+						"铁架系列",
+						"钛金系列",
+						"记忆镜架"
+					],
+					jiage:[
+						"全部",
+						"50以下",
+						"50-100",
+						"100-150",
+						"150-200",
+						"<20>	</20>0-300",
+						"300以上"
+					]
+				};
+
+				 var xialadiv=document.getElementById("xialakuang");
+				 var xialakuang=xialadiv.getElementsByTagName("ul");
+				 var pp=document.getElementById("pingpai");
+				 var ppli=pp.getElementsByTagName("li");
+				
+				
+				for(var i=0;i<7;i++){
+					var duixiangzz=ppli[i].title;
+					show();
+					xiala(i);
+				}
+				
+				function show(){
+					for(var a=0;a<duixiang[duixiangzz].length;a++){
+						var li=document.createElement("li");
+						li.innerHTML=duixiang[duixiangzz][a];
+						xialakuang[i].appendChild(li);
+
+					}
+					xialakuang[i].style.left=ppli[i].offsetLeft+"px";
+					xialakuang[i].style.top=ppli[i].offsetTop+23+"px";
+					
+				}
+
+						
+				function xiala(i){
+
+					ppli[i].onclick=function(){
+						for(var b=0;b<7;b++){
+							xialakuang[b].style.display="none";
+						}
+						xialakuang[i].style.display="block";
+
+						var xialakuangli=xialakuang[i].getElementsByTagName('li');
+						for(var c=0;c<xialakuangli.length;c++){
+							xialakuangli[c].onclick=function(){
+								console.log(this);
+								ppli[i].getElementsByTagName('p')[0].innerHTML=this.innerHTML;
+								xialakuang[i].style.display="none";
+							}
+						}
+						
+					}
+					
+				}
+
+				//搜索
+				function sousuo(){
+					var yanjing=document.getElementById("yanjing");
+					yanjing.style.display="none";
+					var huanchong=document.getElementById("huanchong");
+					huanchong.style.display="block";
+				}
+
+				
+			</script>
+</body>
+</html>
