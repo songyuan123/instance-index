@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>照片墙（面向对象版）</title>
+	<meta charset="utf-8">
+	<script src="vue.min.js"></script>
+	<style type="text/css">
+		*{margin: 0;padding: 0;}
+		#app{
+			width: 816px;
+			height: 540px;
+			margin:auto;
+			border: 1px solid gray;
+			position: relative;
+			top: 20px;
+		}
+		header{
+			width: 100%;
+			height: 29px;
+			border-bottom: 1px solid gray;
+			line-height: 29px;
+		}
+		header h3{
+			float: left;
+			margin-left: 10px;
+		}
+		header a{
+			float: right;
+			margin-right: 10px;
+		}
+		ul{
+			list-style: none;
+			width: 800px;
+			height: 500px;
+			margin: auto;
+			position: relative;
+			top: 5px;
+		}
+		li{
+			width: 140px;
+			height: 105px;
+			font-size: 0px;
+			float: left;
+			padding: 8px;
+			border: 2px dashed white;
+			position: absolute;
+			
+		}
+		#flooter{
+			width:814px;
+			border:1px dashed green;
+			margin: auto;
+			position: relative;
+			top: 25px;
+		}
+		#flooter p{
+			padding: 5px;
+		}
+	</style>
+</head>
+<body>
+	<div id="app">
+		<header><h3>一堆90后</h3><a href="javascript:void(0)" @click="fn">随机排序</a></header>
+		<ul>
+			<li v-for="li in li" @mousedown.prevent="down(li.index)" @mouseup="up(li.index)">
+				<img :src="li.img">
+			</li>
+		</ul>
+	</div>
+	<div id="flooter">
+		<p>1.鼠标点击拖拽图片</p>
+		<p>2.鼠标松开停止拖拽，图片自动选择就近落脚点停下，对应位置的其它图片让出位置</p>
+		<p>3.鼠标点击拖拽时离本图片最近的边框变为orange</p>
+		<p>4.点击a标签随机排序图片</p>
+	</div>
+	<script type="text/javascript">
+			var vm=new Vue({
+				el:"#app",
+				data:{
+					obj:{
+						activ:false,
+						liindex:0,
+						offsetleft:0,
+						offsettop:0,
+						startx:0,
+						starty:0,
+						moveorderx:0,
+						moveordery:0,
+						endx:[],
+						endy:[]
+					},
+					li:[
+						
+					]
+				},
+				computed:{
+					
+				},
+				methods:{
+					fn(){
+						var ul=document.getElementsByTagName('ul')[0];
+						var li=ul.getElementsByTagName('li');
+						var width=li[0].offsetWidth;
+						var height=li[0].offsetHeight;
+						//随机排序-------
+						randomorder();
+						function randomorder(){
+							//获取随机函数
+							var arr=[];
+							for(var i=0;i<li.length;i++){
+								 var random=Math.floor(Math.random()*li.length);
+								 if(arr.indexOf(random)===-1){
+							 		arr.push(random)
+								 }else{
+							 		i=i-1;
+							 		continue;
+								 }
+							}
+							//随机排序
+							for(var i in arr){
+								li[i].style.top=parseInt(arr[i]/5)*height+"px"; 
+								li[i].style.left=arr[i]%5*width+"px";
+								li[i].style.transition="0.5s"
+							}
+
+						}
+
+					},
+					//鼠标点击图片时
+					down(index){
+						var e=window.event;
+						var div=document.getElementById("app");
+						var ul=document.getElementsByTagName('ul')[0];
+						var li=ul.getElementsByTagName('li');
+						//激活拖拽
+						this.obj.activ=true;
+						//返回索引
+						this.obj.liindex=index;
+						//当前点击图片的offsetWidth和offsetHeight
+						this.obj.offsetleft=li[index].offsetLeft+ul.offsetLeft+div.offsetLeft;
+						this.obj.offsettop=li[index].offsetTop+ul.offsetTop+div.offsetTop;
+						//鼠标点击在图片上的位置
+						this.obj.startx=e.clientX-this.obj.offsetleft;
+						this.obj.starty=e.clientY-this.obj.offsettop;
+						//返回offaetLeft和offsetTop到end数组中
+						this.obj.endx[index]=li[index].offsetLeft;
+						this.obj.endy[index]=li[index].offsetTop;
+						//取消过渡效果
+						li[index].style.transition="none";
+
+						//当前点击的图片移动过程覆盖其它的图片
+						for(var i=0;i<li.length;i++){
+							li[i].style.zIndex="5";
+						}
+						li[index].style.zIndex="10";
+					},
+					//鼠标在图片上抬起时
+					up(){
+						var ul=document.getElementsByTagName('ul')[0];
+						var li=ul.getElementsByTagName('li');
+						var left=li[this.obj.liindex].offsetLeft;
+						var top=li[this.obj.liindex].offsetTop;
+						//根据拖动的距离判断图片落脚点
+						li[this.obj.liindex].style.left=parseInt(left/li[0].offsetWidth+0.5)*li[0].offsetWidth+"px";
+						li[this.obj.liindex].style.top=parseInt(top/li[0].offsetHeight+0.5)*li[0].offsetHeight+"px";
+						//图片落下时相对应位置图片给让出位置
+						var arr=[];
+						for(var i=0;i<li.length;i++){
+							if(li[i].offsetLeft==li[this.obj.liindex].offsetLeft&&li[i].offsetTop==li[this.obj.liindex].offsetTop&&i!==this.obj.liindex){
+								arr.push(i);
+							}
+						}
+						li[arr[0]].style.left=this.obj.endx[this.obj.liindex]+"px";
+						li[arr[0]].style.top=this.obj.endy[this.obj.liindex]+"px";
+						li[arr[0]].style.transition="0.5s";
+						//所有图片的border为白色
+						for(var i=0;i<li.length;i++){
+							li[i].style.borderColor="white";
+						}
+					}
+				},
+				watch:{
+					obj:{
+						handler(n){
+							var div=document.getElementById("app");
+							var ul=document.getElementsByTagName('ul')[0];
+							var li=ul.getElementsByTagName('li');
+							var body=document.body||document.documentElement;
+							
+							body.onmousemove=function(e){
+								var e=e||window.event;
+								//当拖拽被激活时
+								if(n.activ===true){
+									//算出移动left
+									n.moveorderx=e.clientX-n.offsetleft-n.startx+n.endx[n.liindex];
+									//限制移动left
+									if(n.moveorderx<=0){
+										n.moveorderx=0;
+									}else if(n.moveorderx>=li[0].offsetWidth*4){
+										n.moveorderx=li[0].offsetWidth*4;
+									}
+									//算出移动top
+									n.moveordery=e.clientY-n.offsettop-n.starty+n.endy[n.liindex];
+									//限制移动top
+									if(n.moveordery<=0){
+										n.moveordery=0;
+									}else if(n.moveordery>=li[0].offsetHeight*3){
+										n.moveordery=li[0].offsetHeight*3;
+									}
+
+									//拖拽图片
+									li[n.liindex].style.left=n.moveorderx+"px";
+									li[n.liindex].style.top=n.moveordery+"px";
+
+									//图片移动的位置隔哪张图片比较近，那张图片的border就变色
+									for(var i=0;i<li.length;i++){
+										li[i].style.borderColor="white";
+										if(Math.abs(li[i].offsetLeft-n.moveorderx)<li[0].offsetWidth/2 && Math.abs(li[i].offsetTop-n.moveordery)<li[0].offsetHeight/2 && i!==n.liindex){
+											li[i].style.borderColor="orange";
+										}
+									}
+
+								
+								}
+								
+							}
+	
+						},
+						deep:true//深度监听
+					}
+					
+				}
+			})
+			
+			window.onload=function(){
+				//用for循环为endx和endy数组添加20个0；
+				for(var i=0;i<20;i++){
+					vm.obj.endx.push(0);
+					vm.obj.endy.push(0);
+				}
+				//用for循环为li添加图片
+				for(var i=0;i<20;i++){
+					vm.li.push({index:i,img:'imgs/one/'+i+'.jpg'});
+				}
+				//延迟0.1秒再执行，因为得先执行上面的一部
+				setTimeout(function(){
+					var ul=document.getElementsByTagName('ul')[0];
+					var li=ul.getElementsByTagName('li');
+					var width=li[0].offsetWidth;
+					var height=li[0].offsetHeight;
+					//默认排序
+					order(li,width,height);
+					function order( li,width,height){
+						for(var i=0;i<li.length;i++){
+							li[i].style.top=parseInt(i/5)*height+"px"; 
+							li[i].style.left=i%5*width+"px";
+						}
+					}
+					
+					
+				},100)
+				//当鼠标在屏幕上抬起时，停止拖拽
+				var body=document.body||document.documentElement;
+				body.addEventListener("mouseup",function(){
+					vm.obj.activ=false;
+				})
+			}
+
+		</script>
+</body>
+</html>

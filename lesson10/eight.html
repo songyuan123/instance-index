@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>仿百度风云榜TAB切换</title>
+	<meta charset="utf-8">
+	<script src="vue.min.js"></script>
+	<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+	<style type="text/css">
+		*{margin: 0;padding: 0;}
+		#app{
+			width: 500px;
+			height: 400px;
+			border:1px solid gray;
+			margin: auto;
+			position: relative;
+			top: 20px;
+			background-color: #f6f6f6;
+		}
+		/*路由入口*/
+		nav{
+			width: 100%;
+			height: 50px;
+			outline: 1px solid gray;
+			position: relative;
+		}
+		nav h4{
+			width: 70px;
+			height: 50px;
+			float: left;
+			text-align: right;
+			line-height: 50px;
+		}
+		nav ul{
+			list-style: none;
+			width: 200px;
+			height: 50px;
+			display: flex;
+			flex-direction: row;
+			align-items: flex-end;
+			position: absolute;
+			left: 150px;
+		}
+		nav ul li{
+			cursor: pointer;
+			width: 100px;
+			height: 35px;
+			line-height:35px;
+			text-align: center;
+			z-index: 10;
+			border-top:1px solid white;
+			border-right:1px solid white;
+			border-left:1px solid white;
+		}
+		.router-link-active{
+			outline: 1px solid white;
+			border-top:1px solid gray;
+			border-right:1px solid gray;
+			border-left:1px solid gray;
+	
+		}
+		nav div{
+			width: 60px;
+			height: 50px;
+			position: absolute;
+			right: 40px;
+		}
+		nav div span{
+			display:block; 
+			height:0px;
+			width:0px;
+			border:15px solid black; 
+			border-color:black black transparent transparent; 
+			border-right: none;
+			transform: rotate(-135deg);
+			cursor: pointer;
+		}
+		.rowleft{
+			position: absolute;
+			left: 0px;
+			top: 5px;
+		}
+		.rowright{
+			transform: rotate(45deg);
+			position: absolute;
+			right: 0px;
+			top: 17px;
+		}
+		
+		/*路由出口*/
+		.content{
+			width: 450px;
+			height: 300px;
+			margin: auto;
+			position: relative;
+			top: 25px;
+			
+		}
+		#view{
+			width: 100%;
+			height: 280px;
+			display: flex;
+			justify-content: space-between;
+			flex-wrap: wrap;
+		}
+		#view  a{
+			text-decoration: none;
+			display: block;
+			width: 100%;
+			height: 20px;
+			padding: 10px 0;
+			font-size: 18px;
+			border-bottom: 1px solid gray;
+			color: blue;
+			
+		}
+		#view a:hover{
+			text-decoration: underline;
+		}
+		
+		#view a span{
+			background-color: red;
+			padding:5px 10px;
+			border-radius: 5px;
+			margin-right: 10px;
+			color: black;
+		}
+		.content button{
+			padding: 5px;
+			color: white;
+			border:none;
+			background-color: blue;
+			position: absolute;
+			right: 0px;
+		}
+	</style>
+</head>
+<body>
+	<div id="app">
+		<nav>
+			<h4>教 育</h4>
+			<ul>
+				<router-link v-for="link in link" :to="link.to" event="mouseover" tag="li" v-if="link.if" @mouseover.native="routerlink(link.index)">{{link.text}}</router-link>
+			</ul>
+			<div>
+				<span class="row rowleft" @click.prevent.stop="rowleft"></span>
+				<span class="row rowright" @click.prevent.stop="rowright"></span>
+			</div>
+		</nav>
+		<div class="content">
+			<router-view id="view"></router-view>
+			<button>完整榜单</button>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var one={template:`
+				<div>
+					<a href="#"><span>1</span>北大青鸟</a>
+					<a href="#"><span>2</span>新华电脑学校</a>
+					<a href="#"><span>3</span>完美动力</a>
+					<a href="#"><span>4</span>达内培训</a>
+					<a href="#"><span>5</span>汇众教育</a>
+					<a href="#"><span>6</span>思远IT学院</a>
+				</div>
+				`}
+		var two={template:`
+				<div>
+					<a href="#"><span>1</span>北京四中网校</a>
+					<a href="#"><span>2</span>学大教育</a>
+					<a href="#"><span>3</span>中国统一教育网</a>
+					<a href="#"><span>4</span>101远程教育</a>
+					<a href="#"><span>5</span>巨人教育</a>
+					<a href="#"><span>6</span>黄冈中学网校</a>
+				</div>
+			`}
+		var three={template:`
+				<div>
+					<a href="#"><span>1</span>新东方</a>
+					<a href="#"><span>2</span>英孚教育</a>
+					<a href="#"><span>3</span>环球雅思</a>
+					<a href="#"><span>4</span>韦博国际英语</a>
+					<a href="#"><span>5</span>华尔街英语</a>
+					<a href="#"><span>6</span>新航道</a>
+				</div>
+			`}
+		var four={template:`
+				<div>
+					<a href="#"><span>1</span>2+2留学</a>
+					<a href="#"><span>2</span>澳际留学</a>
+					<a href="#"><span>3</span>新东方前途出国</a>
+					<a href="#"><span>4</span>启德留学</a>
+					<a href="#"><span>5</span>嘉华世达</a>
+					<a href="#"><span>6</span>金吉列留学</a>
+				</div>
+			`}
+		var five={template:`
+				<div>
+					<a href="#"><span>1</span>新东方</a>
+					<a href="#"><span>2</span>英孚教育</a>
+					<a href="#"><span>3</span>昂立教育</a>
+					<a href="#"><span>4</span>环球雅思</a>
+					<a href="#"><span>5</span>韦博国际英语</a>
+					<a href="#"><span>6</span>华尔街英语</a>
+				</div>
+			`}
+
+		const routes=[
+			{path:"/",component:one},
+			{path:"/one",component:one},
+			{path:"/two",component:two},
+			{path:"/three",component:three},
+			{path:"/four",component:four},
+			{path:"/five",component:five}
+			
+		]
+
+		const router=new VueRouter({
+			routes
+		})
+	var vm=new Vue({
+			el:"#app",
+			router,
+			data:{
+				i:0,
+				link:[
+					{index:0,text:'IT培训',to:'/one',if:true},
+					{index:1,text:'留学机构',to:'/two',if:true},
+					{index:2,text:'语言培训',to:'/three',if:false},
+					{index:3,text:'英语培训',to:'/four',if:false},
+					{index:4,text:'基础教育',to:'/five',if:false},
+				]
+			},
+			methods:{
+				// 左箭头
+				rowleft(){
+					var i=this.i;
+					i--;
+					if(i<=0){
+						i=0;
+					}
+					this.i=i;
+					for(var a=0;a<this.link.length;a++){
+						this.link[a].if=false;
+					}
+					this.link[i].if=true;
+					this.link[i+1].if=true;
+
+				},
+				// 右箭头
+				rowright(){
+					var i=this.i;
+					i++;
+					if(i>=4){
+						i=4;
+					}
+					this.i=i;
+					for(var a=0;a<this.link.length;a++){
+						this.link[a].if=false;
+					}
+					this.link[i].if=true;
+					this.link[i-1].if=true;
+					
+				},
+				// 鼠标悬浮在路由入口时
+				routerlink(index){
+					for(var i=0;i<this.link.length;i++){
+						if(this.link[i].to==this.$route.path){
+							this.i=i;
+						}	 	
+					}
+				}
+			},
+			watch:{
+				i:{
+					handler(n){
+						var row=document.getElementsByClassName('row');
+						// 路由入口边框样式
+						if(n==4){
+							row[1].style.borderColor="red red transparent transparent";
+						}else{
+							row[1].style.borderColor="black black transparent transparent";
+						}
+						
+						if(n==0){
+							row[0].style.borderColor="red red transparent transparent";
+						}else{
+							row[0].style.borderColor="black black transparent transparent";
+						}
+						// 改变当前路由地址
+						this.$router.push(this.link[n].to);
+					},
+					immediate:true
+				}
+			}
+		})
+
+		window.onload=function(){
+			for(var i=0;i<vm.link.length;i++){
+				if(vm.link[i].to==vm.$route.path){
+					vm.i=i;
+				}	 	
+			}
+			
+		}
+		
+
+	</script>
+</body>
+</html>

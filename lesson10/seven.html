@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CF 官方导航栏</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		*{margin: 0;padding: 0;}
+		nav{
+			width: 100%;
+			height: 400px;
+			background-color: black;
+
+		}
+		nav .head{
+			width: 1000px;
+			height: 90px;
+			margin: auto;
+			background:url(imgs/seven/navbg.jpg) no-repeat;
+			cursor: pointer;
+		}
+		.bg{
+			width: 1000px;
+			height: 300px;
+			margin: auto;
+			background:url(imgs/seven/navbg2.jpg) no-repeat;
+		}
+
+		#s{
+			list-style: none;
+			width: 1000px;
+			height: 0px;
+			background:url(imgs/seven/navbg3.jpg) no-repeat;
+			background-size: 1000px 220px;
+			margin: auto;
+			position: relative;
+			top: -300px;
+			display: flex;
+			overflow: hidden;
+		}
+		#s li{
+			height: 220px;
+			text-align: center;
+			float: left;
+			position: absolute;
+		}
+		#s li a{
+			display: block;
+			text-decoration: none;
+			font-size: 14px;
+			color: white;
+			margin: 5px 0;
+		}
+		#s li a:hover{color: #03FAE5}
+		.s10{
+			width: 35px;
+			left:947.5px;
+		}
+		.s9{
+			width: 70px;
+			left:860px;
+		}
+		.s8{
+			width: 70px;
+			left:775px;
+		}
+		.s7{
+			width: 70px;
+			left:690px;
+		}
+		.s6{
+			width: 70px;
+			left:600px;
+		}
+		.s5{
+			width: 70px;
+			left: 325px;
+		}
+		.s4{
+			width: 70px;
+			left: 240px
+		}
+		.s3{
+			width: 70px;
+			left: 155px;
+		}
+		.s2{
+			width: 70px;
+			left: 70px;
+		}
+	</style>
+	<script type="text/javascript">
+		window.onload=function(){
+			var head=document.getElementsByClassName("head")[0];
+			var ul=document.getElementById("s");
+			var li=ul.getElementsByTagName("li");
+			head.onmouseover=over;
+			head.onmouseleave=leave;
+
+			ul.onmouseover=over;
+			ul.onmouseleave=leave;
+			function over(){
+				ul.style.height="220px";
+				ul.style.transition="1s";
+			}
+			function leave(){
+				ul.style.height="0px";
+			}
+
+			for(var i=0;i<li.length;i++){
+				li[i].index=i;
+				li[i].onmouseover=liover;
+				li[i].onmouseleave=lileave;
+				function liover(){
+					li[this.index].style.backgroundColor="black";
+		
+				}
+				function lileave(){
+					li[this.index].style.background="none";
+				}
+
+			}
+		}
+	</script>
+</head>
+<body>
+	<div>
+		<nav>
+			<div class="head"></div>
+			<div class="bg"></div>
+			<ul id="s">
+				<li class="s2">
+           			<a href="javascript:;">新闻</a>
+            		<a href="javascript:;">公告</a>
+            		<a href="javascript:;">活动</a>
+            		<a href="javascript:;">赛事</a>
+        		</li>
+       			<li class="s3">
+            		<a href="javascript:;">新兵上路</a>
+            		<a href="javascript:;">游戏资料</a>
+            		<a href="javascript:;">常见问题</a>
+        		</li>
+        		<li class="s4">
+            		<a href="javascript:;">游戏下载</a>
+            		<a href="javascript:;">精美壁纸</a>
+            		<a href="javascript:;">主题歌曲</a>
+            		<a href="javascript:;">火线杂志</a>
+            		<a href="javascript:;">连载小说</a>
+        		</li>
+        		<li class="s5">
+            		<a href="javascript:;">体验服</a>
+            		<a href="javascript:;">封号查询</a>
+            		<a href="javascript:;">BUG提交</a>
+            		<a href="javascript:;">游戏安全</a>
+            		<a href="javascript:;">防沉迷</a>
+            		<a href="javascript:;">反外挂专题</a>
+        		</li>
+        		<li class="s6">
+            		<a href="javascript:;">活动专区</a>
+            		<a href="javascript:;">版本专区</a>
+            		<a href="javascript:;">大赛专区</a>
+            		<a href="javascript:;">视频专区</a>
+            		<a href="javascript:;">QQ会员专区</a>
+            		<a href="javascript:;">CDKEY专区</a>
+        		</li>
+        		<li class="s7">
+            		<a href="javascript:;">战队系统</a>
+            		<a href="javascript:;">荣誉系统</a>
+        		</li>
+        		<li class="s8">
+            		<a href="javascript:;">战术攻略</a>
+            		<a href="javascript:;">玩家相册</a>
+            		<a href="javascript:;">玩家视频</a>
+            		<a href="javascript:;">玩家截图</a>
+            		<a href="javascript:;">官方博客</a>
+            		<a href="javascript:;">官方微博</a>
+        		</li>
+        		<li class="s9">
+            		<a href="javascript:;">客户服务</a>
+            		<a href="javascript:;">用户协议</a>
+            		<a href="javascript:;">玩家条例</a>
+            		<a href="javascript:;">网友互助</a>
+        		</li>
+        		<li class="s10">
+            		<a href="javascript:;">论坛</a>
+            		<a href="javascript:;">搜吧</a>
+        		</li>
+
+			</ul>
+		</nav>
+		
+	</div>
+
+</body>
+</html>

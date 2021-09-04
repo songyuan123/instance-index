@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>动态生成表格</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		*{margin: 0;padding: 0;}
+		#app{
+			
+		}
+		.form{
+			width: 400px;
+			margin: auto;
+			position: relative;
+			top: 20px;
+
+		}
+		input{
+			width: 70px;
+			height: 20px;
+			padding: 5px;
+		}
+		button{
+			width: 85px;
+			height: 35px;
+			margin-left: 10px;
+
+		}
+		table{
+			text-align: center;
+			vertical-align: center;
+			margin: auto;
+			position: relative;
+			top: 50px;
+		}
+		tr{
+			height: 20px;
+		}
+		td{
+			width: 20px;
+		}
+	</style>
+	<script type="text/javascript">
+		window.onload=function(){
+			var form=document.getElementsByClassName('form')[0];
+			var input1=form.getElementsByTagName('input')[0];
+			var input2=form.getElementsByTagName('input')[1];
+			var table=document.getElementsByTagName('table')[0];
+			var button=document.getElementsByTagName('button')[0];
+			// 封装函数 生成表格
+			function Table(row,col){
+				for(var i=0;i<row;i++){
+					var tr=document.createElement("tr");
+					for(var a=0;a<col;a++){
+						var td=document.createElement("td");
+						tr.appendChild(td)
+					}
+					table.appendChild(tr)
+				}
+			}
+			var color=['red','orange','yellow','green','blue','#160170','#4f149f'];
+			// 封装函数 为表格自动填充随机数字和颜色
+			function random(row,col){
+					for(var a=0;a<row*col;a++){
+						var random=Math.floor(Math.random()*7)
+						var td=document.getElementsByTagName('td');
+						td[a].style.backgroundColor=color[random];
+						td[a].innerHTML=random;
+					}
+				
+			}
+
+			// 点击生成按钮
+			button.onclick=function(){
+				table.innerHTML="";
+				var row=input1.value;
+				var col=input2.value;
+				var rest=/^((?!0)\d{1,2}|100)$/;
+				if(rest.test(row)==true&&rest.test(col)==true){
+					Table(row,col);
+					random(row,col);
+				}else{
+					alert("请输入正确的整数,范围[1-100]")
+				}	
+				
+			}
+			
+			
+			
+			
+				
+			
+			
+			
+		}
+	</script>
+</head>
+<body>
+
+	<div id="app">
+		<div class="form">
+			行数：<input type="text" name="hang" value="50"> 
+			列数：<input type="text" name="lie" value="50">
+			<button>生成表格</button>
+		</div>
+		<table border="1px" collapse>
+			<tr>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+			</tr>
+		</table>	
+	</div>
+</body>
+</html>

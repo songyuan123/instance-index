@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>仿腾讯游戏《英雄杀》</title>
+	<meta charset="utf-8">
+	<script src="vue.min.js"></script>
+	<style type="text/css">
+		*{margin: 0;padding: 0;}
+		#app{
+			background:url(imgs/four/bg.png) no-repeat;
+		}
+		.zhuti{
+			width:850px;
+			height: 300px;
+		
+			margin: auto;
+			position: relative;
+			top: 28%;
+		}
+		.content{
+			width: 640px;
+			height: 300px;
+			overflow: hidden;
+			margin: auto;
+			position: relative;
+			
+		}
+		ul{
+			list-style: none;
+			width: 2700px;
+			height: 300px;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			position: absolute;
+			left: -360px;
+		}
+		ul li{
+			width: 120px;
+			height: 150px;
+			outline: 2px solid black;
+			cursor: pointer;
+			position: relative;
+			overflow: hidden;
+		}
+		li img{
+			width: 100%;
+			height: 100%;
+		}
+		li div{
+			width: 100%;
+			height: 65%;
+			background-color:black;
+			z-index: 6;
+			opacity: 0.6;
+			color: white;
+			position: absolute;
+			bottom: -65%;
+			transition: 0.5s;
+
+		}
+		li h4{
+			font-size: 10px;
+			transform: scale(0.8);
+		}
+		li span{
+			color: red;
+			padding: 0 10px;
+		}
+		li p{
+			font-size: 10px;
+			transform: scale(0.8);
+		}
+		.arrow{
+			display: block;
+			width:30px;
+			height: 50px;
+			background:url(imgs/four/arrow.png) no-repeat;
+			background-size: 100% 100%;
+			position: absolute;
+		}
+		.arrow:hover{
+			width:35px;
+			height: 55px;
+		}
+		.arrow1{
+			cursor: pointer;
+			top: 125px;
+			left:0px;
+
+		}
+		.arrow2{
+			transform:rotate(180deg);
+			top: 125px;
+			right: 0px;
+			
+		}
+		.floor{
+			width:90%;
+			height: 200px;
+			position: absolute;
+			left:50px;
+			bottom: 0px;
+		}
+		.floor li{
+			padding: 5px;
+			font-size: 14px;
+		}
+	</style>
+</head>
+<body>
+	<div id="app">
+		<div class="zhuti">
+		<span class="arrow arrow1" @mouseover="arrowover" @mouseleave="arrowleave" @mousedown="arrowleft" @mouseup="arrowleftup"></span>
+			<div class="content">
+				<ul>
+					<li v-for="li in li" @mouseover="move(li.index)" @mouseleave="leave(li.index)" @mousedown="down(li.index)" @mouseup="up(li.index)"><img :src="li.img"><div><h4>{{li.h4}}<span>{{li.span}}</span></h4><p>{{li.p}}</p></div></li>
+				</ul>
+			</div>
+		<span class="arrow arrow2" @mouseover="arrowover" @mouseleave="arrowleave" @mousedown="arrowright" @mouseup="arrowrightup"></span>
+		</div>
+	</div>
+	<ol class="floor">
+		<li>自动播放，中间图片高亮</li>
+		<li>鼠标移到图片上时停止播放,鼠标移动到中间大图上时弹出人物介绍，鼠标移动到两边小图片上时显示高亮</li>
+		<li>鼠标离开图片时自动播放，鼠标离开中间大图时隐藏人物介绍，鼠标离开中间大图不改变背景亮度</li>
+		<li>点击某张图片，该图片自动移动到中间位置</li>
+		<li>鼠标移动到左右箭头时停止自动播放，离开时启动自动播放</li>
+		<li>左右箭头控制播放</li>
+	</ol>
+	<script type="text/javascript">
+		var vm=new Vue({
+			el:"#app",
+			data:{
+				li:[
+					{index:0,img:"imgs/four/11.jpg",h4:'关羽',span:'武圣',p:'关羽，字云长，本字长生，河东解县人（今山西省运城市），东汉末年三国时期刘备的重要将领。'},
+
+					{index:1,img:"imgs/four/12.jpg",h4:'鲁智深',span:'花和尚',p:'鲁智深，梁山泊第十三位好汉，绰号花和尚。因为见郑屠欺侮金翠莲父女，三拳打死了镇关西。'},
+
+					{index:2,img:"imgs/four/13.jpg",h4:'赢政',span:'秦始皇',p:'秦始皇，赢姓，赵氏，名政，秦庄襄王之子。秦始皇22岁时，在雍城举行国君成人加冕仪式。开始"亲理朝政"。'},
+
+					{index:3,img:"imgs/four/14.jpg",h4:'赵匡胤',span:'宋太祖',p:'赵匡胤，中国北宋王朝的建立者，庙号太祖，汉族，涿州（今河北）人。出身军人家庭。高祖赵眺，祖父赵敬。'},
+
+
+					// ................
+
+					{index:4,img:"imgs/four/1.jpg",h4:'小乔',span:'国色天香',p:'小乔，三国时期的主要女性人物之一。在三国时归属吴国，国色流离、资貌绝伦，是当时有名的东吴美女。'},
+
+					{index:5,img:"imgs/four/2.jpg",h4:'潘安',span:'花样美男',p:'潘安，西晋文学家，本名潘岳。中国古代最著名的美男子之首、"金谷二十四友"之首。'},
+
+					{index:6,img:"imgs/four/3.jpg",h4:'朱元璋',span:'明太祖',p:'朱元璋，明王朝的开国皇帝，建立了全国统一的封建政权。'},
+
+					{index:7,img:"imgs/four/4.jpg",h4:'吕雉',span:'吕后',p:'吕雉，西汉开国皇帝高祖刘邦的原配夫人，中国历史上第一位掌权的女性统治者。'},
+
+					{index:8,img:"imgs/four/5.jpg",h4:'诸葛亮',span:'卧龙',p:'诸葛亮，蜀汉丞相，三国时期杰出的政治家、战略家、发明家、军事家。'},
+
+					{index:9,img:"imgs/four/6.jpg",h4:'李师师',span:'青楼歌妓',p:'李师师，北宋末年色艺双绝的名妓，其事迹多见于野史，笔记小说。据传曾深受宋徽宗喜爱。'},
+
+					{index:10,img:"imgs/four/7.jpg",h4:'陈圆圆',span:'乱世红颜',p:'陈圆圆，名沅，明末清初苏州名姬，浙江金华人氏。"容辞闲雅，额秀頣丰"，有名士大家风度。'},
+
+					{index:11,img:"imgs/four/8.jpg",h4:'扁鹊',span:'神医',p:'扁鹊精于内、外、妇、儿、五官等科，应用针灸、按摩、汤药、热熨等法治疗疾病，被尊为医祖。'},
+
+					{index:12,img:"imgs/four/9.jpg",h4:'西施',span:'西子',p:'西施，名夷光，春秋时间越国人，今浙江诸暨市城关苎萝村。同范蠡同卒于陶（定陶）。'},
+
+					{index:13,img:"imgs/four/10.jpg",h4:'杨延昭',span:'天狼星',p:'杨延昭是北宋抗辽大将杨业的长子，自幼就受到其父抵抗契丹、收复失地的思想影响。'},
+
+					{index:14,img:"imgs/four/11.jpg",h4:'关羽',span:'武圣',p:'关羽，字云长，本字长生，河东解县人（今山西省运城市），东汉末年三国时期刘备的重要将领。'},
+
+					{index:15,img:"imgs/four/12.jpg",h4:'鲁智深',span:'花和尚',p:'鲁智深，梁山泊第十三位好汉，绰号花和尚。因为见郑屠欺侮金翠莲父女，三拳打死了镇关西。'},
+
+					{index:16,img:"imgs/four/13.jpg",h4:'赢政',span:'秦始皇',p:'秦始皇，赢姓，赵氏，名政，秦庄襄王之子。秦始皇22岁时，在雍城举行国君成人加冕仪式。开始"亲理朝政"。'},
+
+					{index:17,img:"imgs/four/14.jpg",h4:'赵匡胤',span:'宋太祖',p:'赵匡胤，中国北宋王朝的建立者，庙号太祖，汉族，涿州（今河北）人。出身军人家庭。高祖赵眺，祖父赵敬。'},
+
+
+					//............
+
+					{index:18,img:"imgs/four/1.jpg",h4:'小乔',span:'国色天香',p:'小乔，三国时期的主要女性人物之一。在三国时归属吴国，国色流离、资貌绝伦，是当时有名的东吴美女。'},
+
+					{index:19,img:"imgs/four/2.jpg",h4:'潘安',span:'花样美男',p:'潘安，西晋文学家，本名潘岳。中国古代最著名的美男子之首、"金谷二十四友"之首。'},
+
+					{index:20,img:"imgs/four/3.jpg",h4:'朱元璋',span:'明太祖',p:'朱元璋，明王朝的开国皇帝，建立了全国统一的封建政权。'},
+
+					{index:21,img:"imgs/four/4.jpg",h4:'吕雉',span:'吕后',p:'吕雉，西汉开国皇帝高祖刘邦的原配夫人，中国历史上第一位掌权的女性统治者。'},
+					
+				],
+				obj:{
+					times:'',//计时函数内容
+					timer:'',//计时函数名
+					guodui:0,//用于当ul移动超出范围时暗地里调动位置
+					i:3 //ul将要移动到的位置
+				}
+				
+			},
+			methods:{
+				//鼠标移动到图片上时
+				move(index){
+					var ul=document.getElementsByTagName("ul")[0];
+					var li =ul.getElementsByTagName("li");
+					var div=ul.getElementsByTagName("div");
+					//停止计时函数
+					clearInterval(this.obj.timer);
+					//该图片显示高亮
+					li[index].style.filter="brightness(1)";
+					//清除图片过渡效果
+					li[index].style.transition="none";
+					//移动到中间大图片，则弹出该图片的介绍
+					if(index==this.obj.i){
+						div[index].style.bottom=0+"px";
+					}
+
+				},
+				//鼠标离开图片时
+				leave(index){
+					var ul=document.getElementsByTagName("ul")[0];
+					var li =ul.getElementsByTagName("li");
+					var div=ul.getElementsByTagName("div");
+					//启动计时函数
+					this.obj.timer=setInterval(this.obj.times,3000);
+					//如果不是离开中间大图片，则该图片亮度变暗
+					if(index!==this.obj.i){
+						li[index].style.filter="brightness(0.6)";
+					}
+					//隐藏该图片介绍
+					div[index].style.bottom="-65%";
+				},
+				//点击图片时
+				down(index){
+					var ul=document.getElementsByTagName("ul")[0];
+					var li =ul.getElementsByTagName("li");
+
+					this.obj.guodui=index;
+					//启动过渡
+					ul.style.transition="0.5";
+					//如果ul移动超出指定范围时
+					if(this.obj.guodui>17){
+						//先删除过渡效果
+						ul.style.transition="none";
+						//为鼠标抬起时ul移动的位置取值
+						this.obj.guodui=4;
+						//暗地里移动到合适位置
+						this.obj.i=3;
+						//图片取消过渡效果
+						for(var a=0;a<li.length;a++){
+							li[a].style.transition="none";
+						}
+					}else if(this.obj.guodui<3){
+						ul.style.transition="none";
+						this.obj.guodui=16;
+						this.obj.i=17;
+						for(var a=0;a<li.length;a++){
+							li[a].style.transition="none";
+						}
+					}
+					//ull取消过渡效果
+					ul.style.transition="none";
+							
+				},
+				//鼠标从图片上抬起时
+				up(index){
+					var ul=document.getElementsByTagName("ul")[0];
+					var li =ul.getElementsByTagName("li");
+					//移动到指定位置
+					this.obj.i=this.obj.guodui;
+					//启动过渡
+					ul.style.transition="0.5s";
+					for(var a=0;a<li.length;a++){
+						li[a].style.transition="0.5s";
+						//所有图片大小重置
+						li[a].style.transform="scale(1)"
+					}
+				},
+
+				//鼠标悬停在箭头上时
+				arrowover(){
+					clearInterval(this.obj.timer);
+				},
+				//鼠标离开箭头时
+				arrowleave(){
+					this.obj.timer=setInterval(this.obj.times,3000)
+				},
+				//按下左箭头时
+				arrowleft(){
+					var ul=document.getElementsByTagName("ul")[0];
+					var li =ul.getElementsByTagName("li");
+
+					ul.style.transition="0.5s";
+					for(var a=0;a<li.length;a++){
+							li[a].style.transition="0.5s";
+					}
+					this.obj.i++;
+				},
+				//松开左箭头时
+				arrowleftup(){
+					var ul=document.getElementsByTagName("ul")[0];
+					var li =ul.getElementsByTagName("li");
+					if(this.obj.i>=17){
+							ul.style.transition="none";
+							for(var a=0;a<li.length;a++){
+								li[a].style.transition="none";
+								li[a].style.transform="scale(1)"
+							}
+							this.obj.i=3;		
+					}
+				},
+				//按下右箭头时
+				arrowright(){
+					var ul=document.getElementsByTagName("ul")[0];
+					var li =ul.getElementsByTagName("li");
+					ul.style.transition="0.5s";
+					for(var a=0;a<li.length;a++){
+							li[a].style.transition="0.5s";
+					}
+					
+					this.obj.i--;
+				},
+				//松开右箭头时
+				arrowrightup(){
+					
+					var ul=document.getElementsByTagName("ul")[0];
+					var li =ul.getElementsByTagName("li");
+					if(this.obj.i<=3){
+							ul.style.transition="none";
+							for(var a=0;a<li.length;a++){
+								li[a].style.transition="none";
+								li[a].style.transform="scale(1)"
+							}
+							this.obj.i=16;		
+					}
+				}
+			},
+			watch:{
+				obj:{
+					handler(n){
+						var ul=document.getElementsByTagName("ul")[0];
+						var li =ul.getElementsByTagName("li");
+
+						//所有图片的间隙和亮度默认值
+						for(var a=0;a<li.length;a++){
+							li[a].style.margin="0px";
+							li[a].style.filter="brightness(0.6)";
+						}
+						
+						//获取i，设置ul的初始位置	
+						var i=n.i;
+						ul.style.left=-li[0].offsetWidth*(i-2)+"px";
+						
+						//根据i的变化，设置间距，背景亮度，大小和z-index
+						li[i].style.margin="0 20px";
+						li[i].style.filter="brightness(1)";
+					
+						li[i].style.zIndex="5";
+						li[i-2].style.zIndex="3";
+						li[i-1].style.zIndex="4";
+						li[i+1].style.zIndex="4";
+						li[i+2].style.zIndex="3";
+							
+						li[i].style.transform="scale(1.8)";	
+						li[i-2].style.transform="scale(1)";
+						li[i-1].style.transform="scale(1.4)";
+						li[i+1].style.transform="scale(1.4)";
+						li[i+2].style.transform="scale(1)";		
+					},
+					deep:true
+				}
+			}
+		})
+		window.onload=function(){
+			var div=document.getElementById("app");
+			var body=document.documentElement;
+			//背景图片宽高
+			div.style.width=body.clientWidth+"px";
+			div.style.height=body.clientHeight+"px";
+			div.style.backgroundSize="100% 70%";
+			var content=document.getElementsByClassName("content")[0];
+			var ul=document.getElementsByTagName("ul")[0];
+			var li =ul.getElementsByTagName("li");
+			//封装计时函数
+			vm.obj.times=function (){
+					vm.obj.i++;
+					ul.style.transition="0.5s";
+					for(var a=0;a<li.length;a++){
+							li[a].style.transition="0.5s";
+					}
+					if(vm.obj.i>=17){
+						setTimeout(function(){
+							ul.style.transition="none";
+							for(var a=0;a<li.length;a++){
+								li[a].style.transition="none";
+							}
+							vm.obj.i=3;
+							for(var i=0;i<li.length;i++){
+								li[i].style.transform="scale(1)"
+							}
+						},500)	
+					}	
+							
+			}
+			vm.obj.timer=setInterval(vm.obj.times,3000);
+			
+		}
+
+	</script>
+</body>
+</html>
